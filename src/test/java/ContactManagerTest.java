@@ -1,15 +1,24 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContactManagerTest {
+    ContactManager contactManager;
+
+    @BeforeAll
+    public void setupAll() {
+        System.out.println("Printed before all.");
+    }
+
+    @BeforeEach
+    public void setup() {
+        contactManager = new ContactManager();
+    }
 
     @Test
     public void shouldCreateContact() {
-        ContactManager contactManager = new ContactManager();
-        contactManager.addContact(" ", "Karapetyan", "0123456789");
+        contactManager.addContact("Artak", "Karapetyan", "0123456789");
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
         Assertions.assertTrue(contactManager.getAllContacts().stream().
@@ -21,7 +30,6 @@ class ContactManagerTest {
     @Test
     @DisplayName("Should not create a contact when the first name is null")
     public void shouldThrowRuntimeExceptionWhenFirstNameIsNull() {
-        ContactManager contactManager = new ContactManager();
         Assertions.assertThrows(RuntimeException.class, () -> {
             contactManager.addContact(null, "Karapetyan", "0123456789");
         });
@@ -30,7 +38,6 @@ class ContactManagerTest {
     @Test
     @DisplayName("Should not create a contact when the last name is null.")
     public void shouldThrowRuntimeExceptionWhenLastNameIsNull() {
-        ContactManager contactManager = new ContactManager();
         Assertions.assertThrows(RuntimeException.class, () -> {
             contactManager.addContact("Artak", null, "0123456789");
         });
@@ -39,7 +46,6 @@ class ContactManagerTest {
     @Test
     @DisplayName("Should not create a contact when the phone number is null.")
     public void shouldThrowRuntimeExceptionWhenPhoneNumberIsNull() {
-        ContactManager contactManager = new ContactManager();
         Assertions.assertThrows(RuntimeException.class, () -> {
             contactManager.addContact("Artak", "Karapetyan", null);
         });
@@ -48,10 +54,19 @@ class ContactManagerTest {
     @Test
     @DisplayName("Should not create a contact when the phone number doesn't consist of digits.")
     public void shouldThrowRuntimeExceptionWhenPhoneNumberIsntDigits() {
-        ContactManager contactManager = new ContactManager();
         Assertions.assertThrows(RuntimeException.class, () -> {
             contactManager.addContact("Artak", "Karapetyan", "abcdefghij");
         });
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.out.println("Executed after each test.");
+    }
+
+    @AfterAll
+    public void tearDownAll() {
+        System.out.println("Executed at the end of the test.");
     }
 }
 
