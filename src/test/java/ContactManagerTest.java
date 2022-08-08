@@ -3,6 +3,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Random;
@@ -120,6 +121,15 @@ class ContactManagerTest {
     @ParameterizedTest
     @CsvSource({"0123456789", "0123456798", "0123456897"})
     public void shouldTestPhoneNumberUsingCSVSource(String phoneNumber) {
+        contactManager.addContact("John", "Doe", "0123456789");
+        assertFalse(contactManager.getAllContacts().isEmpty());
+        assertEquals(1, contactManager.getAllContacts().size());
+    }
+
+    @DisplayName("CSV source case - phone number should match the required format.")
+    @ParameterizedTest
+    @CsvFileSource(resources = "/data.csv")
+    public void shouldTestPhoneNumberUsingCSVFileSource(String phoneNumber) {
         contactManager.addContact("John", "Doe", "0123456789");
         assertFalse(contactManager.getAllContacts().isEmpty());
         assertEquals(1, contactManager.getAllContacts().size());
