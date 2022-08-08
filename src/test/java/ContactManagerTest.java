@@ -25,6 +25,8 @@ class ContactManagerTest {
     }
 
     @Test
+    @DisplayName("Should create contact")
+    @Disabled
     public void shouldCreateContact() {
         contactManager.addContact("Artak", "Karapetyan", "0123456789");
         Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
