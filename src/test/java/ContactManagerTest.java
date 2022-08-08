@@ -109,29 +109,35 @@ class ContactManagerTest {
         Assertions.assertEquals(1, contactManager.getAllContacts().size());
     }
 
-    @DisplayName("Repeat generating random numbers.")
-    @RepeatedTest(value = 5, name = "Repeatedly creating random numbers {currentRepetition} of {totalRepetitions}")
-    public void repeatedNumGeneration() {
-        Random random = new Random();
-        int randomNum = random.nextInt(1, 6);
-        System.out.println(randomNum);
+    @Nested
+    class repeatedTest {
+        @DisplayName("Repeat generating random numbers.")
+        @RepeatedTest(value = 5, name = "Repeatedly creating random numbers {currentRepetition} of {totalRepetitions}")
+        public void repeatedNumGeneration() {
+            Random random = new Random();
+            int randomNum = random.nextInt(1, 6);
+            System.out.println(randomNum);
+        }
     }
 
-    @DisplayName("CSV source case - phone number should match the required format.")
-    @ParameterizedTest
-    @CsvSource({"0123456789", "0123456798", "0123456897"})
-    public void shouldTestPhoneNumberUsingCSVSource(String phoneNumber) {
-        contactManager.addContact("John", "Doe", "0123456789");
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1, contactManager.getAllContacts().size());
-    }
+    @Nested
+    class parametrizedTest {
+        @DisplayName("CSV source case - phone number should match the required format.")
+        @ParameterizedTest
+        @CsvSource({"0123456789", "0123456798", "0123456897"})
+        public void shouldTestPhoneNumberUsingCSVSource(String phoneNumber) {
+            contactManager.addContact("John", "Doe", "0123456789");
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1, contactManager.getAllContacts().size());
+        }
 
-    @DisplayName("CSV file source case - phone number should match the required format.")
-    @ParameterizedTest
-    @CsvFileSource(resources = "/data.csv")
-    public void shouldTestPhoneNumberUsingCSVFileSource(String phoneNumber) {
-        contactManager.addContact("John", "Doe", "0123456789");
-        assertFalse(contactManager.getAllContacts().isEmpty());
-        assertEquals(1, contactManager.getAllContacts().size());
+        @DisplayName("CSV file source case - phone number should match the required format.")
+        @ParameterizedTest
+        @CsvFileSource(resources = "/data.csv")
+        public void shouldTestPhoneNumberUsingCSVFileSource(String phoneNumber) {
+            contactManager.addContact("John", "Doe", "0123456789");
+            assertFalse(contactManager.getAllContacts().isEmpty());
+            assertEquals(1, contactManager.getAllContacts().size());
+        }
     }
 }
